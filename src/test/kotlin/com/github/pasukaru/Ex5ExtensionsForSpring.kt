@@ -60,7 +60,7 @@ class Ex5ExtensionsForSpring : BaseControllerTest() {
     fun withExtensions() {
         val body = PingResponse("Hello World")
         val uuid = UUID.randomUUID()
-        val pathVariables = mapOf(Pair("uuid", uuid))
+        val pathVariables = mapOf("uuid" to uuid)
 
         val result = mvc.perform(PingController::pingWithParam.post(body, pathVariables))
             .debug()
