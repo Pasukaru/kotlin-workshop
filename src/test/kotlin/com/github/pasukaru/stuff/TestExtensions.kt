@@ -31,30 +31,13 @@ class TestExtensions {
 fun KFunction<*>.post(
     body: Any?,
     pathVariables: Map<String, Any> = emptyMap()
-): MockHttpServletRequestBuilder? {
-    val urlRaw = this.getUrl()
-    val url = urlRaw
-        .let {
-            var replaced = it
-            pathVariables.forEach { key, value ->
-                val current = replaced.replace("{$key}", value.toString(), ignoreCase = false)
-                if (current == replaced) {
-                    throw Exception("Parameter {$key} does not exist on url $urlRaw for method ${this}")
-                }
-                replaced = current
-            }
-            TestExtensions.PARAMETER_NAME_REGEX.find(replaced)?.let { match ->
-                throw Exception("Parameter ${match.value} was not replaced in url $urlRaw for method ${this}")
-            }
-            replaced
-        }
-
-    return MockMvcRequestBuilders.post(url)
+): MockHttpServletRequestBuilder {
+    return MockMvcRequestBuilders.post(this.getUrl(pathVariables))
         .accept(MediaType.APPLICATION_JSON)
         .also { p -> body?.let { p.jsonBody(body) } }
 }
 
-fun KFunction<*>.getUrl(): String {
+fun KFunction<*>.getRawUrl(): String {
     val owner = (this as FunctionReference).owner as KClass<*>
 
     val foundAnnotations = TestExtensions.SUPPORTED_MAPPING_ANNOTATIONS
@@ -77,11 +60,26 @@ fun KFunction<*>.getUrl(): String {
         is DeleteMapping -> annotation.value
         is RequestMapping -> annotation.value
         else -> throw IllegalAccessError("Annotation not supported: $annotation")
-    }.first()
+    }.firstOrNull().orEmpty()
 
     val prefix = owner.findAnnotation<RequestMapping>()?.value?.get(0).orEmpty()
     val url = (prefix + suffix).let { if (!it.startsWith("/")) "/" + it else it }
     return url
+}
+
+fun KFunction<*>.getUrl(pathVariables: Map<String, Any> = emptyMap()): String {
+    val rawUrl = this.getRawUrl()
+    return pathVariables.toList().fold(rawUrl, { url, (key, value) ->
+        url.replace("{$key}", value.toString(), ignoreCase = false)
+            .also { current ->
+                if (current == url) {
+                    throw Exception("Parameter {$key} does not exist on url $rawUrl for method ${this}")
+                }
+                TestExtensions.PARAMETER_NAME_REGEX.find(current)?.let { match ->
+                    throw Exception("Parameter ${match.value} was not replaced in url $rawUrl for method ${this}")
+                }
+            }
+    })
 }
 
 fun ResultActions.debug(): ResultActions {
