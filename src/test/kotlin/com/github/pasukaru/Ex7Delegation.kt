@@ -8,6 +8,8 @@ import kotlin.properties.Delegates
 
 class Ex7Delegation {
 
+    // Delegation
+
     interface Counter {
         fun getCount(): Int
         fun count()
@@ -48,6 +50,7 @@ class Ex7Delegation {
         assertThat(proxy.getCount()).isEqualTo(3)
     }
 
+    // Lazy properties
 
     data class LazyExample(var firstName: String, var lastName: String) {
         var computed = 0
@@ -73,6 +76,8 @@ class Ex7Delegation {
         assertThat(item.fullName).isEqualTo("John Doe")
         assertThat(item.computed).isEqualTo(1)
     }
+
+    // Observable properties
 
     class ObservableExample(firstName: String, lastName: String) {
         var firstNameComputed = 0
