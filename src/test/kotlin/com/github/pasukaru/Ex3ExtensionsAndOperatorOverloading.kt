@@ -32,4 +32,10 @@ class Ex3ExtensionsAndOperatorOverloading {
         assertThat(+"Hello World").isEqualTo("HELLO WORLD")
     }
 
+    @Test
+    fun existingOperatos() {
+        @Suppress("SimplifyBooleanWithConstants")
+        assertThat("a" > "b").isFalse()
+    }
+
 }

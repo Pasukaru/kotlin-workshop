@@ -5,6 +5,7 @@ package com.github.pasukaru
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.fail
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class Ex1KotlinBasics {
 
@@ -87,6 +88,8 @@ class Ex1KotlinBasics {
         }
     }
 
+    // Lambda syntax
+
     @Test
     fun lambdaSyntax() {
         // Lambda Syntax in Kotlin
@@ -110,22 +113,41 @@ class Ex1KotlinBasics {
         assertThat(sorted).isSortedAccordingTo { a, b -> a.substring(1, 2).compareTo(b.substring(1, 2)) }
     }
 
+    // Inheritance
+
+    open class A (var id: UUID)
+
+    class B (id: UUID, var name: String) : A(id)
+
+    // class C : B(UUID.randomUUID(), "foo") // - compilation error: B is final
+
+    @Test
+    fun inheritance() {
+        val id = UUID.randomUUID()
+        val b = B(id, "something")
+        assertThat(b.id).isEqualTo(id)
+        assertThat(b.name).isEqualTo("something")
+    }
+
     // 'Static'
+
+    /*
 
     object Something {
         val foo = "foo"
     }
 
     open class InheritFromMe {
-        val fooBar: String = "fooBar"
+        val fooBar: kotlin.String = "fooBar"
     }
 
-    companion object A : InheritFromMe() {
+    // companion object extension currently breaks the IDE
+    companion object NameDoesNotMatter : InheritFromMe() {
         const val BAR = "BAR"
     }
 
     @Test
-    fun accessObject() {
+    fun staticAccess() {
         // Objects are accessed statically
         assertThat(Ex1KotlinBasics.Something.foo).isEqualTo("foo")
 
@@ -136,4 +158,5 @@ class Ex1KotlinBasics {
         assertThat(Ex1KotlinBasics.fooBar).isEqualTo("fooBar")
     }
 
+    */
 }
