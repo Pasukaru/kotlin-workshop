@@ -30,7 +30,11 @@ abstract class BaseControllerTest : BaseSpringTest() {
     }
 
     fun debug(resultActions: ResultActions): ResultActions {
-        resultActions.andReturn().response
+        val result = resultActions.andReturn()
+        println("URI:")
+        println(result.request.requestURI)
+        println("RESPONSE:")
+        println(result.response.contentAsString)
         return resultActions
     }
 
