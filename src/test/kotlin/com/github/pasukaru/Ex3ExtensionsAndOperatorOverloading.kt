@@ -3,6 +3,8 @@ package com.github.pasukaru
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
+// Extensions
+
 fun Int.plusOne(): Int {
     return this + 1
 }
@@ -11,11 +13,13 @@ fun String.beCool(): String {
     return "$this is cool"
 }
 
+// Operator overloading
+
 operator fun String.unaryPlus(): String {
     return this.toUpperCase()
 }
 
-class Ex3Extensions {
+class Ex3ExtensionsAndOperatorOverloading {
 
     @Test
     fun useExtension() {

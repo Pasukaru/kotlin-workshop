@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test
 
 class Ex1KotlinBasics {
 
+    // Variables
+
     data class Item(
         var name: String?
     )
@@ -41,6 +43,22 @@ class Ex1KotlinBasics {
         // Also, no need to call a setter method:
         item.name = "something else"
         assertThat(item.name).isEqualTo("something else")
+    }
+
+    // Lateinit var
+
+    class LateinitItem {
+        lateinit var name: String
+    }
+
+    @Test
+    fun lateinitExample() {
+        val item = LateinitItem()
+        // item.name = null // Compilation error -> cannot assign null
+        // assertThat(item.name).isNull() // Runtime exception -> UninitializedPropertyAccessException("lateinit property name has not been initialized")
+
+        item.name = "Hello World"
+        assertThat(item.name).isEqualTo("Hello World")
     }
 
     @Test
@@ -90,6 +108,32 @@ class Ex1KotlinBasics {
             .sortedBy { it.substring(1, 2) }
 
         assertThat(sorted).isSortedAccordingTo { a, b -> a.substring(1, 2).compareTo(b.substring(1, 2)) }
+    }
+
+    // 'Static'
+
+    object Something {
+        val foo = "foo"
+    }
+
+    open class InheritFromMe {
+        val fooBar: String = "fooBar"
+    }
+
+    companion object A : InheritFromMe() {
+        const val BAR = "BAR"
+    }
+
+    @Test
+    fun accessObject() {
+        // Objects are accessed statically
+        assertThat(Ex1KotlinBasics.Something.foo).isEqualTo("foo")
+
+        // Companion object's properties are accessed directly on the parent
+        assertThat(Ex1KotlinBasics.BAR).isEqualTo("BAR")
+
+        // Can access inherited properties
+        assertThat(Ex1KotlinBasics.fooBar).isEqualTo("fooBar")
     }
 
 }
