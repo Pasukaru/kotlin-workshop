@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import kotlin.properties.Delegates
 
-class Ex7Delegation {
+class Ex5Delegation {
 
     // Delegation
 

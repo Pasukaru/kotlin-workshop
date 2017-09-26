@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class Ex6KotlinDefaultExtensions {
+class Ex4KotlinDefaultExtensions {
 
     data class Item(val id: UUID, val name: String) {
         constructor(name: String) : this(UUID.randomUUID(), name)

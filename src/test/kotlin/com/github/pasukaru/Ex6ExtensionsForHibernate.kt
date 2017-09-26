@@ -33,7 +33,7 @@ fun <FROM : DbModel, TO : DbModel?> From<*, FROM>.join(property: KProperty1<FROM
     return this.join(property.name, type)
 }
 
-class Ex4ExtensionsForHibernate {
+class Ex6ExtensionsForHibernate {
 
     @Test
     fun useExtension() {

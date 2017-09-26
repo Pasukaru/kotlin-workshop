@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.util.*
 
-class Ex5ExtensionsForSpring : BaseControllerTest() {
+class Ex7ExtensionsForSpring : BaseControllerTest() {
 
     @Test
     fun withoutExtensions() {
